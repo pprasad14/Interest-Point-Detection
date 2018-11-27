@@ -6,10 +6,10 @@
 #include <vector>
 #include <queue>
 
-#include <CGAL/basic.h>
-#include <CGAL/Search_traits.h>
-#include <CGAL/point_generators_3.h>
-#include <CGAL/Orthogonal_k_neighbor_search.h>
+//#include <CGAL/basic.h>
+//#include <CGAL/Search_traits.h>
+//#include <CGAL/point_generators_3.h>
+//#include <CGAL/Orthogonal_k_neighbor_search.h>
 
 using namespace std;
 
