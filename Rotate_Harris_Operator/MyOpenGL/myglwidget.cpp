@@ -14,13 +14,17 @@ using std::cin;
 using std::cerr;
 
 //std::string line;
-using std::cout;
-using std::endl;
-using std::cin;
-using std::cerr;
+//using std::cout;
+//using std::endl;
+//using std::cin;
+//using std::cerr;
 
 std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.vert");
 std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.tri");
+
+
+//std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.vert");
+//std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.tri");
 
 //struct vertex {
 //    float x;
@@ -51,7 +55,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     n_vertex = 0;
     n_face = 0;
-    float a1, b1,c1;
+    float a1, b1,c1/*,d1*/;
 
     //  to count no of vertices
     cout << "Finding total number of vertices and faces in files:" << endl;
@@ -62,7 +66,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     cout << "No of vertices : " << n_vertex << endl;
 
     // to count the no of faces
-    while(inFile_face >> a1 >> b1 >> c1)
+    while(inFile_face >> a1 >> b1 >> c1/* >> d1*/)
     {
         n_face++;
     }
@@ -79,6 +83,10 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.vert");
     std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.tri");
 
+//    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.vert");
+//    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.tri");
+
+
     cout << "Populating Vertex Structure:" << endl;
     while(inFile_vert >> a1 >> b1 >> c1)
     {
@@ -94,11 +102,12 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     pos = 0;
     cout << "Populating Faces Structure:" << endl;
 
-    while(inFile_face >> a1 >> b1 >> c1)
+    while(inFile_face >> a1 >> b1 >> c1 /*>> d1*/)
     {
         faces[pos].v1 = a1;
         faces[pos].v2 = b1;
         faces[pos].v3 = c1;
+//        faces[pos].v4 = d1;
         pos++;
     }
     cout << "No of iterations : " << pos << endl;
@@ -108,6 +117,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     cout << "Vertex file closed!" << endl;
 
     inFile_face.close();
+
     cout << "Face file closed!" << endl;
 
     this->vertices = vertices;
@@ -121,6 +131,13 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     cout << endl << "test no vertex:" << this->no_of_vertices << endl;
     cout << endl << "test no faces:" << this->no_of_faces << endl;
 
+//    for(int i = 0; i < n_vertex; i++){
+//        cout << "test vertex:" << this->vertices[i].x << "  " << this->vertices[i].y  << "  " << this->vertices[i].z << endl;
+//    }
+//    for(int i = 0; i < n_face; i++){
+//        cout << "test vertex:" << this->faces[i].v1 << "  " << this->faces[i].v2  << "  " << this->faces[i].v3 <<  "  " << this->faces[i].v4 << endl;
+//    }
+
 }
 
 MyGLWidget::~MyGLWidget()
@@ -130,71 +147,7 @@ MyGLWidget::~MyGLWidget()
 
 void MyGLWidget::read_points()
 {
-//    int n_vertex;
-//    int n_face;
 
-//    n_vertex = 0;
-//    n_face = 0;
-//    float a1, b1,c1;
-
-//    //  to count no of vertices
-//    cout << "Finding total number of vertices and faces in files:" << endl;
-//    while(inFile_vert >> a1 >> b1 >> c1)
-//    {
-//        n_vertex++;
-//    }
-//    cout << "No of vertices : " << n_vertex << endl;
-
-//    // to count the no of faces
-//    while(inFile_face >> a1 >> b1 >> c1)
-//    {
-//        n_face++;
-//    }
-//    cout << "No of faces : " << n_face << endl << endl;
-
-//    //creating structures to hold the vertices and faces
-//    vertices = new vertex[n_vertex];
-//    faces = new face[n_face];
-
-//    //populating the vertices in the structure
-//    int pos = 0;
-
-//    // re-reading input file stream since it has already reached the EOF with previous iteration above
-//    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.vert");
-//    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.tri");
-
-//    cout << "Populating Vertex Structure:" << endl;
-//    while(inFile_vert >> a1 >> b1 >> c1)
-//    {
-//        vertices[pos].x = a1;
-//        vertices[pos].y = b1;
-//        vertices[pos].z = c1;
-//        pos++;
-//    }
-//    cout << "No of iterations : " << pos << endl;
-//    cout << "Populating Vertex Structure successfull!!" << endl << endl;
-
-//    //populating the faces in the structure
-//    pos = 0;
-//    cout << "Populating Faces Structure:" << endl;
-
-//    while(inFile_face >> a1 >> b1 >> c1)
-//    {
-//        faces[pos].v1 = a1;
-//        faces[pos].v2 = b1;
-//        faces[pos].v3 = c1;
-//        pos++;
-//    }
-//    cout << "No of iterations : " << pos << endl;
-//    cout << "Populating Faces Structure successfull!!" << endl << endl;
-
-//    inFile_vert.close();
-//    cout << "Vertex file closed!" << endl;
-
-//    inFile_face.close();
-//    cout << "Face file closed!" << endl;
-//    this->vertices = vertices;
-//    this->faces = faces;
 }
 
 QSize MyGLWidget::minimumSizeHint() const
@@ -310,52 +263,66 @@ void MyGLWidget::draw()
 {
 
     qglColor(Qt::red);
-//    glBegin(GL_QUADS);
-//        glNormal3f(0,0,1);
-//        glVertex3f(-1,-1,0);
-//        glVertex3f(-1,1,0);
-//        glVertex3f(1,1,0);
-//        glVertex3f(1,-1,0);
-//    glEnd();
+    //    glBegin(GL_QUADS);
+    //        glNormal3f(0,0,1);
+    //        glVertex3f(-1,-1,0);
+    //        glVertex3f(-1,1,0);
+    //        glVertex3f(1,1,0);
+    //        glVertex3f(1,-1,0);
+    //    glEnd();
 
-//    for(int i = 0; i < no_of_faces; i++)
-//    {
-//            glBegin(GL_TRIANGLES);
-////                glNormal3f(0,-1,0.707);
-//                glVertex3f(this->vertices[this->faces[i].v1].x ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z );
-//                glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z );
-//                glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
-//            glEnd();
-//    }
 
     for(int i = 0; i < no_of_faces; i++)
     {
-            glBegin(GL_TRIANGLES);
-//                glNormal3f(0,-1,0.707);
-                glVertex3f(vertices[faces[i].v1].x ,vertices[faces[i].v1].y ,vertices[faces[i].v1].z );
-                glVertex3f(vertices[faces[i].v2].x ,vertices[faces[i].v2].y ,vertices[faces[i].v2].z );
-                glVertex3f(vertices[faces[i].v3].x ,vertices[faces[i].v3].y ,vertices[faces[i].v3].z );
-            glEnd();
+        glBegin(GL_QUADS);
+//        glNormal3f(0,-1,0.707);
+        glVertex3f(this->vertices[this->faces[i].v1].x ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z );
+        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z );
+        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
+//        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
+        glEnd();
+
     }
+//    for(int i = 0; i < no_of_faces; i++)
+//    {
+//        glBegin(GL_QUADS);
+////        glNormal3f(0,-1,0.707);
+//        glVertex3f(this->vertices[this->faces[i].v1].x ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z );
+//        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z );
+//        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
+//        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
+//        glEnd();
+
+//    }
+
+    //    for(int i = 0; i < no_of_faces; i++)
+    //    {
+    //            glBegin(GL_TRIANGLES);
+    //                glNormal3f(0,-1,0.707);
+    //                glVertex3f(vertices[faces[i].v1].x ,vertices[faces[i].v1].y ,vertices[faces[i].v1].z );
+    //                glVertex3f(vertices[faces[i].v2].x ,vertices[faces[i].v2].y ,vertices[faces[i].v2].z );
+    //                glVertex3f(vertices[faces[i].v3].x ,vertices[faces[i].v3].y ,vertices[faces[i].v3].z );
+    //            glEnd();
+    //    }
 
 
-//    glBegin(GL_TRIANGLES);
-//        glNormal3f(1,0, 0.707);
-//        glVertex3f(1,-1,0);
-//        glVertex3f(1,1,0);
-//        glVertex3f(0,0,1.2);
-//    glEnd();
-//    glBegin(GL_TRIANGLES);
-//        glNormal3f(0,1,0.707);
-//        glVertex3f(1,1,0);
-//        glVertex3f(-1,1,0);
-//        glVertex3f(0,0,1.2);
-//    glEnd();
-//    glBegin(GL_TRIANGLES);
-//        glNormal3f(-1,0,0.707);
-//        glVertex3f(-1,1,0);
-//        glVertex3f(-1,-1,0);
-//        glVertex3f(0,0,1.2);
-//    glEnd();
-//    cout << endl << "testing: " << this->faces[1].v1 << endl;
+    //    glBegin(GL_TRIANGLES);
+    //        glNormal3f(1,0, 0.707);
+    //        glVertex3f(1,-1,0);
+    //        glVertex3f(1,1,0);
+    //        glVertex3f(0,0,1.2);
+    //    glEnd();
+    //    glBegin(GL_TRIANGLES);
+    //        glNormal3f(0,1,0.707);
+    //        glVertex3f(1,1,0);
+    //        glVertex3f(-1,1,0);
+    //        glVertex3f(0,0,1.2);
+    //    glEnd();
+    //    glBegin(GL_TRIANGLES);
+    //        glNormal3f(-1,0,0.707);
+    //        glVertex3f(-1,1,0);
+    //        glVertex3f(-1,-1,0);
+    //        glVertex3f(0,0,1.2);
+    //    glEnd();
+    //    cout << endl << "testing: " << this->faces[1].v1 << endl;
 }

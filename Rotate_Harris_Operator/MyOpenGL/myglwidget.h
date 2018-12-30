@@ -33,6 +33,7 @@ struct face {
     int v1;
     int v2;
     int v3;
+//    int v4;
 };
 
 ////vertex *vertices;
