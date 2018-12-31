@@ -207,13 +207,13 @@ void MyGLWidget::initializeGL()
 {
     qglClearColor(Qt::blue);
 
-    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
+//    glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
+    static GLfloat lightPosition[4] = { 0, 10, 10, 1.0 };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 }
 
