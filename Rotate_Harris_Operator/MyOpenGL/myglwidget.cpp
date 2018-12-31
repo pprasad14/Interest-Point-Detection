@@ -19,12 +19,12 @@ using std::cerr;
 //using std::cin;
 //using std::cerr;
 
-std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.vert");
-std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.tri");
+//std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
+//std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
 
-//std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.vert");
-//std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.tri");
+std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
+std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
 
 //struct vertex {
 //    float x;
@@ -55,18 +55,21 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     n_vertex = 0;
     n_face = 0;
-    float a1, b1,c1/*,d1*/;
+    int a_face, b_face,c_face/*,d_face*/;
+    float a_vert, b_vert,c_vert/*,d_vert*/;
+    int temp;
+
 
     //  to count no of vertices
     cout << "Finding total number of vertices and faces in files:" << endl;
-    while(inFile_vert >> a1 >> b1 >> c1)
+    while(inFile_vert >> a_vert >> b_vert >> c_vert)
     {
         n_vertex++;
     }
     cout << "No of vertices : " << n_vertex << endl;
 
     // to count the no of faces
-    while(inFile_face >> a1 >> b1 >> c1/* >> d1*/)
+    while(inFile_face >> /*temp >>*/ a_face >> b_face >> c_face /*>> d1*/)
     {
         n_face++;
     }
@@ -80,19 +83,19 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     int pos = 0;
 
     // re-reading input file stream since it has already reached the EOF with previous iteration above
-    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.vert");
-    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cat0.tri");
+//    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
+//    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-//    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.vert");
-//    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\cube.tri");
+    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
+    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
 
 
     cout << "Populating Vertex Structure:" << endl;
-    while(inFile_vert >> a1 >> b1 >> c1)
+    while(inFile_vert >> a_vert >> b_vert >> c_vert)
     {
-        vertices[pos].x = a1;
-        vertices[pos].y = b1;
-        vertices[pos].z = c1;
+        vertices[pos].x = a_vert;
+        vertices[pos].y = b_vert;
+        vertices[pos].z = c_vert;
         pos++;
     }
     cout << "No of iterations : " << pos << endl;
@@ -102,11 +105,11 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     pos = 0;
     cout << "Populating Faces Structure:" << endl;
 
-    while(inFile_face >> a1 >> b1 >> c1 /*>> d1*/)
+    while(inFile_face >>/* temp >>*/ a_face >> b_face >> c_face /*>> d1*/)
     {
-        faces[pos].v1 = a1;
-        faces[pos].v2 = b1;
-        faces[pos].v3 = c1;
+        faces[pos].v1 = a_face;
+        faces[pos].v2 = b_face;
+        faces[pos].v3 = c_face;
 //        faces[pos].v4 = d1;
         pos++;
     }
@@ -262,7 +265,7 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
 void MyGLWidget::draw()
 {
 
-    qglColor(Qt::red);
+//    qglColor(Qt::red);
     //    glBegin(GL_QUADS);
     //        glNormal3f(0,0,1);
     //        glVertex3f(-1,-1,0);
@@ -274,7 +277,7 @@ void MyGLWidget::draw()
 
     for(int i = 0; i < no_of_faces; i++)
     {
-        glBegin(GL_QUADS);
+        glBegin(GL_TRIANGLES);
 //        glNormal3f(0,-1,0.707);
         glVertex3f(this->vertices[this->faces[i].v1].x ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z );
         glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z );
