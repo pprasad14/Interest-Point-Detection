@@ -19,12 +19,12 @@ using std::cerr;
 //using std::cin;
 //using std::cerr;
 
-//std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
-//std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
+std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
+std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
 
-std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
-std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
+//std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
+//std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
 
 //struct vertex {
 //    float x;
@@ -57,7 +57,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     n_face = 0;
     int a_face, b_face,c_face/*,d_face*/;
     float a_vert, b_vert,c_vert/*,d_vert*/;
-    int temp;
+//    int temp;
 
 
     //  to count no of vertices
@@ -83,11 +83,12 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     int pos = 0;
 
     // re-reading input file stream since it has already reached the EOF with previous iteration above
-//    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
-//    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
-    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
+    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
+    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
+
+//        std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
+//        std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
 
 
     cout << "Populating Vertex Structure:" << endl;
@@ -203,7 +204,7 @@ void MyGLWidget::setZRotation(int angle)
 
 void MyGLWidget::initializeGL()
 {
-    qglClearColor(Qt::black);
+    qglClearColor(Qt::blue);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -233,11 +234,13 @@ void MyGLWidget::resizeGL(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-#ifdef QT_OPENGL_ES_1
-    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
-#else
-    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
-#endif
+//#ifdef QT_OPENGL_ES_1
+//    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
+//#else
+//    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
+//#endif
+
+    glScalef(0.05f,0.05f,0.05f);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -274,14 +277,40 @@ void MyGLWidget::draw()
     //        glVertex3f(1,-1,0);
     //    glEnd();
 
+    float Ux, Uy, Uz, Vx, Vy, Vz, Nx, Ny, Nz;
+    float norm;
 
     for(int i = 0; i < no_of_faces; i++)
     {
+
+        // Finding the Normal Vector to a face:
+        // https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal?fbclid=IwAR04iWPcnrtmCJ-Vxn_4jkO4vS9aJZqkmydLchUe4HQRL6mpSHeY2rAxzR8
+
+
+        Ux = this->vertices[this->faces[i].v2].x  - this->vertices[this->faces[i].v1].x;
+        Uy = this->vertices[this->faces[i].v2].y  - this->vertices[this->faces[i].v1].y;
+        Uz = this->vertices[this->faces[i].v2].z  - this->vertices[this->faces[i].v1].z;
+
+        Vx = this->vertices[this->faces[i].v3].x  - this->vertices[this->faces[i].v1].x;
+        Vy = this->vertices[this->faces[i].v3].y  - this->vertices[this->faces[i].v1].y;
+        Vz = this->vertices[this->faces[i].v3].z  - this->vertices[this->faces[i].v1].z;
+
+        Nx = Uy*Vz - Uz*Vy;
+        Ny = Uz*Vx - Ux*Vz;
+        Nz = Ux*Vy - Uy*Vx;
+
+        norm = sqrt(Nx*Nx + Ny+Ny + Nz*Nz);
+
+        Nx = Nx/norm;
+        Ny = Ny/norm;
+        Nz = Nz/norm;
+
+
         glBegin(GL_TRIANGLES);
-//        glNormal3f(0,-1,0.707);
-        glVertex3f(this->vertices[this->faces[i].v1].x ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z );
-        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z );
-        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
+//        glNormal3f(Nx,Ny,Nz);
+        glVertex3f(this->vertices[this->faces[i].v1].x /10 ,this->vertices[this->faces[i].v1].y /10,this->vertices[this->faces[i].v1].z /10 );
+        glVertex3f(this->vertices[this->faces[i].v2].x /10,this->vertices[this->faces[i].v2].y /10,this->vertices[this->faces[i].v2].z /10 );
+        glVertex3f(this->vertices[this->faces[i].v3].x /10,this->vertices[this->faces[i].v3].y /10,this->vertices[this->faces[i].v3].z /10);
 //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
         glEnd();
 
@@ -308,24 +337,4 @@ void MyGLWidget::draw()
     //            glEnd();
     //    }
 
-
-    //    glBegin(GL_TRIANGLES);
-    //        glNormal3f(1,0, 0.707);
-    //        glVertex3f(1,-1,0);
-    //        glVertex3f(1,1,0);
-    //        glVertex3f(0,0,1.2);
-    //    glEnd();
-    //    glBegin(GL_TRIANGLES);
-    //        glNormal3f(0,1,0.707);
-    //        glVertex3f(1,1,0);
-    //        glVertex3f(-1,1,0);
-    //        glVertex3f(0,0,1.2);
-    //    glEnd();
-    //    glBegin(GL_TRIANGLES);
-    //        glNormal3f(-1,0,0.707);
-    //        glVertex3f(-1,1,0);
-    //        glVertex3f(-1,-1,0);
-    //        glVertex3f(0,0,1.2);
-    //    glEnd();
-    //    cout << endl << "testing: " << this->faces[1].v1 << endl;
 }
