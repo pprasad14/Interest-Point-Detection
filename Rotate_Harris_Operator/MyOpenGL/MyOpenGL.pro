@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         window.cpp \
-    myglwidget.cpp
+    myglwidget.cpp \
+    harrisoperatorresponse.cpp
 
 HEADERS  += window.h \
-    myglwidget.h
+    myglwidget.h \
+    harrisoperatorresponse.h
 
 FORMS    += window.ui
 LIBS += -lopengl32

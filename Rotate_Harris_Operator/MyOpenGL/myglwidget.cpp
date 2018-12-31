@@ -142,6 +142,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 //        cout << "test vertex:" << this->faces[i].v1 << "  " << this->faces[i].v2  << "  " << this->faces[i].v3 <<  "  " << this->faces[i].v4 << endl;
 //    }
 
+
 }
 
 MyGLWidget::~MyGLWidget()
