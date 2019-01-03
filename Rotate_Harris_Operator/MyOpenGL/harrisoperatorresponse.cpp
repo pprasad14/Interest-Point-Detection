@@ -17,6 +17,8 @@ using std::cerr;
 std::ifstream h_inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 std::ifstream h_inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
+//std::ifstream h_inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
+
 
 //std::ifstream h_inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
 //std::ifstream h_inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
@@ -55,15 +57,67 @@ void HarrisOperatorResponse::getNeighboorhood(int k_rings)
         it=neighbors.begin();
         neighbors.erase(it);
 
-        std::cout << endl << "Neighbors of vertex no " << k << ":";
-        for (it=neighbors.begin(); it!=neighbors.end(); ++it)
-            std::cout << ' ' << *it;
-        std::cout << '\n';
+//        std::cout << endl << "Neighbors of vertex no " << k << ":";
+//        for (it=neighbors.begin(); it!=neighbors.end(); ++it)
+//            std::cout << ' ' << *it;
+//        std::cout << '\n';
 
         neighbors.clear();
 
     }
 }
+
+//void HarrisOperatorResponse::getNeighboorhood(int k_rings)
+//{
+//    int k, i;
+//    //    set<int> neighbors;
+//    std::set<int> neighbors;
+//    std::set<int>::iterator it;
+//    int pos, len_of_set;
+
+//    // set all_first_neighbourhood lenghth to number of vertices
+//    all_first_ring.resize(h_no_of_vertices);
+
+//    //finding the first ring neighboorhood of all vertices:
+//    for(k = 0; k < h_no_of_vertices; k++){
+//        for(i = 0; i < h_no_of_faces; i++){
+//            if((h_faces[i].v1 == k) || (h_faces[i].v2 == k) || (h_faces[i].v3 == k)){
+//                neighbors.insert(h_faces[i].v1);
+//                neighbors.insert(h_faces[i].v2);
+//                neighbors.insert(h_faces[i].v3);
+//            }
+//        }
+
+//        // to remove the vertex whose neighborhood was calculated
+//        it=neighbors.begin();
+//        neighbors.erase(it);
+
+//        pos = 0;
+
+////        int len_of_set = neighbors.size();
+
+//        cout << neighbors.size()<< "  ";
+
+//        all_first_ring[k].resize(len_of_set + 1);
+//        all_first_ring[k][pos] = len_of_set; // storing the set length for each vertex in first index
+
+
+//////        std::cout << endl << "Neighbors of vertex no " << k << ":";
+////        for (it=neighbors.begin(); it!=neighbors.end(); ++it)
+////            all_first_ring[k].push_back(*it);
+//////            std::cout << ' ' << *it;
+//////        std::cout << '\n';
+
+////        std::cout << endl << "Neighbors of vertex no " << k << ":";
+
+////        for(int x = 0; x <= len_of_set; x++)
+////            std::cout << ' ' << all_first_ring[k][++pos];
+////        std::cout << '\n';
+
+//        neighbors.clear();
+
+//    }
+//}
 
     void HarrisOperatorResponse:: populate_data()
     {
@@ -76,6 +130,8 @@ void HarrisOperatorResponse::getNeighboorhood(int k_rings)
         float a_vert, b_vert,c_vert/*,d_vert*/;
         //    int temp;
 
+        cout << endl << "-----------Start Harris------------" << endl ;
+        cout << endl << "For Harris Detection" << endl;
 
         //  to count no of vertices
         cout << "Finding total number of vertices and faces in files:" << endl;
@@ -153,13 +209,35 @@ void HarrisOperatorResponse::getNeighboorhood(int k_rings)
         cout << endl << "h_test no vertex:" << this->h_no_of_vertices << endl;
         cout << endl << "h_test no faces:" << this->h_no_of_faces << endl;
 
+        cout << endl << "--------------End Harris---------------" << endl;
+
     }
 
-    //void HarrisOperatorResponse::populate_data(Harris_faces *f, Harris_vertices *v, int f_len, int v_len)
-    //{
-    //    this->no_of_faces = f_len;
-    //    this->no_of_vertices = v_len;
+//   void HarrisOperatorResponse::display_interest_points()
+//   {
+//       int no_of_interest_points, point, pos;
 
-    //    this->h_faces = f;
-    //    this->h_vertices = v;
-    //}
+//       //  to count no of vertices
+//       cout << "Finding total number of vertices in Interest Point File" << endl;
+//       while(h_inFile_int_points >> point)
+//       {
+//           no_of_interest_points++;
+//       }
+//       h_no_of_interest_points = no_of_interest_points;
+//       cout << "No of Interest Points : " << h_no_of_interest_points << endl;
+
+//       int_points = new int[no_of_interest_points];
+
+//       std::ifstream h_inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
+
+//       pos = 0;
+//       cout << "Populating Interest vertices:" << endl;
+//       while(h_inFile_int_points >> point)
+//       {
+//           int_points[pos] = point;
+//           pos++;
+//       }
+
+//       interest_vertices = int_points;
+
+//   }

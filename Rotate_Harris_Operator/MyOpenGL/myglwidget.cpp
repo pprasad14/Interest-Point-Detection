@@ -22,6 +22,8 @@ using std::cerr;
 std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
+std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
+
 
 //std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
 //std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
@@ -52,14 +54,18 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     int n_vertex;
     int n_face;
+    int n_interest_points;
 
     n_vertex = 0;
     n_face = 0;
+    n_interest_points = 0;
+
     int a_face, b_face,c_face/*,d_face*/;
     float a_vert, b_vert,c_vert/*,d_vert*/;
-//    int temp;
+    int a_interest;
 
-
+    cout << endl << "--------------Start Display--------------" << endl ;
+    cout << endl << "For Display :" << endl << endl;
     //  to count no of vertices
     cout << "Finding total number of vertices and faces in files:" << endl;
     while(inFile_vert >> a_vert >> b_vert >> c_vert)
@@ -73,23 +79,36 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     {
         n_face++;
     }
-    cout << "No of faces : " << n_face << endl << endl;
+    cout << "No of faces : " << n_face << endl;
 
-    //creating structures to hold the vertices and faces
+    // to count the no of interest points
+    while(inFile_int_points >> a_interest)
+    {
+        n_interest_points++;
+    }
+    cout << "No of interest points : " << n_interest_points << endl << endl;
+
+
+
+    //creating structures to hold the vertices and faces and interest points
     vertices = new vertex[n_vertex];
     faces = new face[n_face];
 
-    //populating the vertices in the structure
-    int pos = 0;
+    int * int_points = new int[n_interest_points];
 
     // re-reading input file stream since it has already reached the EOF with previous iteration above
 
     std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
     std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
+    std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
+
+
 //        std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
 //        std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
 
+    //populating the vertices in the structure
+    int pos = 0;
 
     cout << "Populating Vertex Structure:" << endl;
     while(inFile_vert >> a_vert >> b_vert >> c_vert)
@@ -117,23 +136,45 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     cout << "No of iterations : " << pos << endl;
     cout << "Populating Faces Structure successfull!!" << endl << endl;
 
+
+    //populating the int_points
+    pos = 0;
+    cout << "Populating Interest Points:" << endl;
+
+    while(inFile_int_points >> a_interest)
+    {
+        int_points[pos] = a_interest;
+        pos++;
+    }
+    cout << "No of iterations : " << pos << endl;
+    cout << "Populating Interest Points successfull!!" << endl << endl;
+
+
     inFile_vert.close();
     cout << "Vertex file closed!" << endl;
 
     inFile_face.close();
-
     cout << "Face file closed!" << endl;
+
+    inFile_int_points.close();
+    cout << "Interest Point file closed!" << endl;
 
     this->vertices = vertices;
     this->faces = faces;
+    this->interest_vertices = int_points;
 
     this->no_of_faces = n_face;
     this->no_of_vertices = n_vertex;
+    this->h_no_of_interest_points = n_interest_points;
 
-    cout << endl << "test vertex:" << this->vertices[0].x << "  " << this->vertices[0].y  << "  " << this->vertices[0].z << endl;
-    cout << endl << "test face:" << this->faces[0].v1 << "  " << this->faces[0].v2  << "  " << faces[0].v3 << endl;
-    cout << endl << "test no vertex:" << this->no_of_vertices << endl;
-    cout << endl << "test no faces:" << this->no_of_faces << endl;
+    cout << endl << "test vertex:" << this->vertices[0].x << "  " << this->vertices[0].y  << "  " << this->vertices[0].z;
+    cout << endl << "test face:" << this->faces[0].v1 << "  " << this->faces[0].v2  << "  " << faces[0].v3 ;
+    cout << endl << "test interest: " << this->interest_vertices[0];
+    cout << endl << "test no vertex: " << this->no_of_vertices ;
+    cout << endl << "test no faces: " << this->no_of_faces ;
+    cout << endl << "test no of interests: " << this->h_no_of_interest_points << endl << endl ;
+
+    cout << "---------------End Display------------------" << endl << endl;
 
 //    for(int i = 0; i < n_vertex; i++){
 //        cout << "test vertex:" << this->vertices[i].x << "  " << this->vertices[i].y  << "  " << this->vertices[i].z << endl;
@@ -314,8 +355,21 @@ void MyGLWidget::draw()
         glVertex3f(this->vertices[this->faces[i].v3].x /10,this->vertices[this->faces[i].v3].y /10,this->vertices[this->faces[i].v3].z /10);
 //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
         glEnd();
-
     }
+
+    //displaying the interest points:
+    for (int i = 0; i < h_no_of_interest_points; i++)
+    {
+//        glColor3f(1.0, 0.0, 0.0);
+        glPointSize(20);
+        glBegin(GL_POINTS);
+        glColor3f(1.0, 0.0, 0.0);
+        glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
+        glEnd();
+    }
+
+
+
 //    for(int i = 0; i < no_of_faces; i++)
 //    {
 //        glBegin(GL_QUADS);

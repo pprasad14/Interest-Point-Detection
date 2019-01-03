@@ -52,6 +52,10 @@ public:
     int no_of_vertices;
     int no_of_faces;
 
+    int* interest_vertices;
+    int h_no_of_interest_points;
+
+
     void read_points();
 
     explicit MyGLWidget(QWidget *parent = 0);
