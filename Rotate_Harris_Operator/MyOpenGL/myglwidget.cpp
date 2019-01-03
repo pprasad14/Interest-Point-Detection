@@ -246,16 +246,42 @@ void MyGLWidget::setZRotation(int angle)
 
 void MyGLWidget::initializeGL()
 {
-    qglClearColor(Qt::blue);
+    qglClearColor(Qt::black);
 
-//    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+
+    float diffuse0[]={0.2, 0.2, 0.2, 1.0};
+    float ambient0[]={0.8, 0.8, 0.8, 1.0};
+    float specular0[]={1.0,1.0, 1.0, 1.0};
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
+
+    glEnable(GL_LIGHTING);
+
+
+  GLfloat ambient[] = {0.0, 0.0, 0.0, 1.0};
+    GLfloat diffuse[] = {0.0, 0.0, 0.0, 1.0};
+   GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
+   GLfloat shine[] = {20.0};
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+    glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
+    glEnable ( GL_COLOR_MATERIAL ) ;
+
+//    glEnable(GL_CULL_FACE);
 //    glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    static GLfloat lightPosition[4] = { 0, 10, 10, 1.0 };
+    static GLfloat lightPosition[4] = { 0, 0, 15, 1.0 };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glEnable(GL_NORMALIZE);
+
 }
 
 void MyGLWidget::paintGL()
@@ -282,7 +308,7 @@ void MyGLWidget::resizeGL(int width, int height)
 //    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
 //#endif
 
-    glScalef(0.05f,0.05f,0.05f);
+    glScalef(0.005f,0.005f,0.005f);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -347,49 +373,25 @@ void MyGLWidget::draw()
         Ny = Ny/norm;
         Nz = Nz/norm;
 
-
+        glColor3f(0.5f, 0.5f,0.5f);
         glBegin(GL_TRIANGLES);
 //        glNormal3f(Nx,Ny,Nz);
-        glVertex3f(this->vertices[this->faces[i].v1].x /10 ,this->vertices[this->faces[i].v1].y /10,this->vertices[this->faces[i].v1].z /10 );
-        glVertex3f(this->vertices[this->faces[i].v2].x /10,this->vertices[this->faces[i].v2].y /10,this->vertices[this->faces[i].v2].z /10 );
-        glVertex3f(this->vertices[this->faces[i].v3].x /10,this->vertices[this->faces[i].v3].y /10,this->vertices[this->faces[i].v3].z /10);
+        glVertex3f(this->vertices[this->faces[i].v1].x  ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z  );
+        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
+        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
 //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
         glEnd();
     }
 
     //displaying the interest points:
+    glPointSize(100.0f);
     for (int i = 0; i < h_no_of_interest_points; i++)
     {
 //        glColor3f(1.0, 0.0, 0.0);
-        glPointSize(20);
+        glColor3f(1.0f, 0.0f, 0.0f);
         glBegin(GL_POINTS);
-        glColor3f(1.0, 0.0, 0.0);
-        glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
+            glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
         glEnd();
     }
-
-
-
-//    for(int i = 0; i < no_of_faces; i++)
-//    {
-//        glBegin(GL_QUADS);
-////        glNormal3f(0,-1,0.707);
-//        glVertex3f(this->vertices[this->faces[i].v1].x ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z );
-//        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z );
-//        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
-//        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
-//        glEnd();
-
-//    }
-
-    //    for(int i = 0; i < no_of_faces; i++)
-    //    {
-    //            glBegin(GL_TRIANGLES);
-    //                glNormal3f(0,-1,0.707);
-    //                glVertex3f(vertices[faces[i].v1].x ,vertices[faces[i].v1].y ,vertices[faces[i].v1].z );
-    //                glVertex3f(vertices[faces[i].v2].x ,vertices[faces[i].v2].y ,vertices[faces[i].v2].z );
-    //                glVertex3f(vertices[faces[i].v3].x ,vertices[faces[i].v3].y ,vertices[faces[i].v3].z );
-    //            glEnd();
-    //    }
 
 }
