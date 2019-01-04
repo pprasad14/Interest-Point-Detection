@@ -1,3 +1,4 @@
+
 // myglwidget.cpp
 
 #include <QtWidgets>
@@ -103,8 +104,8 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt");
 
 
-//        std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
-//        std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
+    //        std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
+    //        std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
 
     //populating the vertices in the structure
     int pos = 0;
@@ -129,7 +130,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
         faces[pos].v1 = a_face;
         faces[pos].v2 = b_face;
         faces[pos].v3 = c_face;
-//        faces[pos].v4 = d1;
+        //        faces[pos].v4 = d1;
         pos++;
     }
     cout << "No of iterations : " << pos << endl;
@@ -173,14 +174,32 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     cout << endl << "test no faces: " << this->no_of_faces ;
     cout << endl << "test no of interests: " << this->h_no_of_interest_points << endl << endl ;
 
+
+    cout << "Filling up the first ring neighborhood for each vertex:";
+
+    int k, i;
+
+    //finding the first ring neighboorhood of all vertices:
+    for(k = 0; k < no_of_vertices; k++){
+        for(i = 0; i < no_of_faces; i++){
+            if((faces[i].v1 == k) || (faces[i].v2 == k) || (faces[i].v3 == k)){
+                vertices[k].first_ring_points.insert(faces[i].v1);
+                vertices[k].first_ring_points.insert(faces[i].v2);
+                vertices[k].first_ring_points.insert(faces[i].v3);
+            }
+        }
+    }
+
+
+
     cout << "---------------End Display------------------" << endl << endl;
 
-//    for(int i = 0; i < n_vertex; i++){
-//        cout << "test vertex:" << this->vertices[i].x << "  " << this->vertices[i].y  << "  " << this->vertices[i].z << endl;
-//    }
-//    for(int i = 0; i < n_face; i++){
-//        cout << "test vertex:" << this->faces[i].v1 << "  " << this->faces[i].v2  << "  " << this->faces[i].v3 <<  "  " << this->faces[i].v4 << endl;
-//    }
+    //    for(int i = 0; i < n_vertex; i++){
+    //        cout << "test vertex:" << this->vertices[i].x << "  " << this->vertices[i].y  << "  " << this->vertices[i].z << endl;
+    //    }
+    //    for(int i = 0; i < n_face; i++){
+    //        cout << "test vertex:" << this->faces[i].v1 << "  " << this->faces[i].v2  << "  " << this->faces[i].v3 <<  "  " << this->faces[i].v4 << endl;
+    //    }
 
 
 }
@@ -260,10 +279,10 @@ void MyGLWidget::initializeGL()
     glEnable(GL_LIGHTING);
 
 
-  GLfloat ambient[] = {0.0, 0.0, 0.0, 1.0};
+    GLfloat ambient[] = {0.0, 0.0, 0.0, 1.0};
     GLfloat diffuse[] = {0.0, 0.0, 0.0, 1.0};
-   GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
-   GLfloat shine[] = {20.0};
+    GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat shine[] = {20.0};
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
@@ -272,8 +291,8 @@ void MyGLWidget::initializeGL()
     glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
     glEnable ( GL_COLOR_MATERIAL ) ;
 
-//    glEnable(GL_CULL_FACE);
-//    glShadeModel(GL_SMOOTH);
+//        glEnable(GL_CULL_FACE);
+//        glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
@@ -301,11 +320,11 @@ void MyGLWidget::resizeGL(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-//#ifdef QT_OPENGL_ES_1
-//    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
-//#else
-//    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
-//#endif
+    //#ifdef QT_OPENGL_ES_1
+    //    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
+    //#else
+    //    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
+    //#endif
 
     glScalef(0.005f,0.005f,0.005f);
     glMatrixMode(GL_MODELVIEW);
@@ -335,7 +354,7 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
 void MyGLWidget::draw()
 {
 
-//    qglColor(Qt::red);
+    //    qglColor(Qt::red);
     //    glBegin(GL_QUADS);
     //        glNormal3f(0,0,1);
     //        glVertex3f(-1,-1,0);
@@ -366,7 +385,7 @@ void MyGLWidget::draw()
         Ny = Uz*Vx - Ux*Vz;
         Nz = Ux*Vy - Uy*Vx;
 
-        norm = sqrt(Nx*Nx + Ny+Ny + Nz*Nz);
+        norm = sqrt(Nx*Nx + Ny*Ny + Nz*Nz);
 
         Nx = Nx/norm;
         Ny = Ny/norm;
@@ -374,11 +393,14 @@ void MyGLWidget::draw()
 
         glColor3f(0.5f, 0.5f,0.5f);
         glBegin(GL_TRIANGLES);
-            glNormal3f(Nx,Ny,Nz);
-            glVertex3f(this->vertices[this->faces[i].v1].x  ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z  );
-            glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
-            glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
-    //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
+        glNormal3f(Nx,Ny,Nz);
+        glVertex3f(this->vertices[this->faces[i].v1].x  ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z  );
+        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
+        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
+        //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
+//        cout << Nx*Nx + Ny*Ny + Nz*Nz<<endl;
+//        cout <<norm<<endl;
+
         glEnd();
     }
 
@@ -386,11 +408,44 @@ void MyGLWidget::draw()
     glPointSize(10.0f);
     for (int i = 0; i < h_no_of_interest_points; i++)
     {
-//        glColor3f(1.0, 0.0, 0.0);
+        //        glColor3f(1.0, 0.0, 0.0);
         glColor3f(0.0f, 1.0f, 0.0f);
         glBegin(GL_POINTS);
-            glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
+        glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
         glEnd();
     }
+
+    // EDGES IN RING
+    int EdgesinRing = 0;
+    for(int i=0; i< h_no_of_interest_points; i++)
+    {
+        int P = interest_vertices[i];                                                   //For each Interest/Ring Point
+
+
+        std::set<int>N = vertices[P].first_ring_points;                              //Find its Neighbour Vertices
+
+        for(std::set<int>::iterator iti = N.begin(); iti != N.end();iti++)
+        {
+            int nei=*iti;
+
+            for(int k=0; k< h_no_of_interest_points; k++)
+            {
+                if (nei==interest_vertices[k])                                          //Draw an Edge if Neighbour Vertice is in Ring
+                {
+                    glLineWidth(7.0);
+                    glColor3f(1.0f, 0.0f, 0.0f);
+                    glBegin(GL_LINES); //starts drawing of edges
+                    glVertex3f(this->vertices[interest_vertices[i]].x,this->vertices[interest_vertices[i]].y ,this->vertices[interest_vertices[i]].z);
+                    glVertex3f(this->vertices[interest_vertices[k]].x,this->vertices[interest_vertices[k]].y ,this->vertices[interest_vertices[k]].z);
+                    glEnd(); //end drawing of edges
+                    EdgesinRing++;
+                }
+            }
+        }
+    }
+
+    std::cout<<endl<<"Points in Ring: "<<h_no_of_interest_points;
+    std::cout<<endl<<"Edges in Ring: "<<EdgesinRing<<endl;
+
 
 }

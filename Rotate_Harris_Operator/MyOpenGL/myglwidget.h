@@ -1,3 +1,5 @@
+
+
 // myglwidget.h
 
 #ifndef MYGLWIDGET_H
@@ -13,6 +15,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <set>
 
 //std::string line;
 //using std::cout;
@@ -27,6 +30,8 @@ struct vertex {
     float x;
     float y;
     float z;
+    std::set<int> first_ring_points;
+
 };
 
 struct face {
@@ -98,4 +103,3 @@ private:
 };
 
 #endif // MYGLWIDGET_H
-

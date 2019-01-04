@@ -1,3 +1,4 @@
+
 #ifndef HARRISOPERATORRESPONSE_H
 #define HARRISOPERATORRESPONSE_H
 
@@ -10,6 +11,7 @@ struct Harris_vertices {
     float y;
     float z;
     std::set<int> first_ring_points;
+    float Harris_response;
 };
 
 struct Harris_faces {
@@ -29,6 +31,7 @@ public:
 
     Harris_faces * h_faces;
     Harris_vertices * h_vertices;
+    Harris_vertices * new_vertices;
 
     HarrisOperatorResponse();
 
@@ -39,6 +42,8 @@ public:
 
     void populate_data();
     void getNeighboorhood();
+
+    void compute_harris_response( int rings, int rings_max ,float H = 0.4);
 
     ~HarrisOperatorResponse();
 
