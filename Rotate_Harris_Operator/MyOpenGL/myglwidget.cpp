@@ -22,8 +22,7 @@ using std::cerr;
 std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
-
+std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt");
 
 //std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
 //std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
@@ -101,7 +100,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
     std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-    std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
+    std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt");
 
 
 //        std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
@@ -278,7 +277,7 @@ void MyGLWidget::initializeGL()
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    static GLfloat lightPosition[4] = { 0, 0, 15, 1.0 };
+    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     glEnable(GL_NORMALIZE);
 
@@ -375,20 +374,20 @@ void MyGLWidget::draw()
 
         glColor3f(0.5f, 0.5f,0.5f);
         glBegin(GL_TRIANGLES);
-//        glNormal3f(Nx,Ny,Nz);
-        glVertex3f(this->vertices[this->faces[i].v1].x  ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z  );
-        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
-        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
-//        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
+            glNormal3f(Nx,Ny,Nz);
+            glVertex3f(this->vertices[this->faces[i].v1].x  ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z  );
+            glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
+            glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
+    //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
         glEnd();
     }
 
     //displaying the interest points:
-    glPointSize(100.0f);
+    glPointSize(10.0f);
     for (int i = 0; i < h_no_of_interest_points; i++)
     {
 //        glColor3f(1.0, 0.0, 0.0);
-        glColor3f(1.0f, 0.0f, 0.0f);
+        glColor3f(0.0f, 1.0f, 0.0f);
         glBegin(GL_POINTS);
             glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
         glEnd();

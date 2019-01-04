@@ -2,7 +2,9 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-#include<iostream>
+#include <iostream>
+#include <fstream>
+#include <set>
 
 #include "window.h"
 #include "harrisoperatorresponse.h"
@@ -15,6 +17,42 @@ using std::cerr;
 
 int main(int argc, char *argv[])
 {
+    cout << "Main: creating Harris Object: " << endl;
+    HarrisOperatorResponse h_obj;
+
+    h_obj.populate_data();
+    cout << endl << "Main: Harris: populating vertices and faces done!" << endl;
+
+    h_obj.getNeighboorhood();
+    cout << endl << "Main: getting 1st ring neighborhood of all vertices done!" << endl;
+
+    std::set<int> ring3 = h_obj.get_k_ringhood(h_obj.h_vertices[500],6);
+
+    std::string output_loc;
+    output_loc = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt";
+
+    std::ofstream outFile(output_loc);
+
+    if(outFile)
+    {
+        cout << endl << "Main: Output file create at location: " << output_loc << endl;
+        std::set<int>::iterator it;
+        for(it = ring3.begin();it!= ring3.end();it++)
+        {
+            int val = *it;
+            outFile << val <<" ";
+        }
+    }
+    else{
+        cout << endl << "Main: ERROR, CANNOT CREATE THE FILE! " << endl;
+    }
+
+    outFile.close();
+
+    cout << "Main: displaying output:" << endl << endl;
+
+
+
     QApplication app(argc, argv);
 
     Window window;
@@ -23,8 +61,6 @@ int main(int argc, char *argv[])
                      QApplication::desktop()->height();
     int widgetArea = window.width() * window.height();
 
-
-    HarrisOperatorResponse h_obj;
 
     window.setWindowTitle("OpenGL with Qt");
 

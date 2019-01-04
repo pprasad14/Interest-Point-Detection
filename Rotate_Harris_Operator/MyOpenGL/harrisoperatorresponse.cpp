@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <fstream>
 #include <set>
+#include<algorithm>
+#include<vector>
 
 
 std::string h_line;
@@ -17,7 +19,7 @@ using std::cerr;
 std::ifstream h_inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 std::ifstream h_inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-//std::ifstream h_inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points.int");
+//std::ifstream h_inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt");
 
 
 //std::ifstream h_inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
@@ -26,8 +28,9 @@ std::ifstream h_inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Sof
 
 HarrisOperatorResponse::HarrisOperatorResponse()
 {
-    populate_data();
-    getNeighboorhood(1);
+    cout << endl << "Constructor: Harris: Populating Data:" << endl;
+//    populate_data();
+//    getNeighboorhood();
 }
 
 HarrisOperatorResponse::~HarrisOperatorResponse()
@@ -35,36 +38,170 @@ HarrisOperatorResponse::~HarrisOperatorResponse()
 
 }
 
-void HarrisOperatorResponse::getNeighboorhood(int k_rings)
+void HarrisOperatorResponse::getNeighboorhood()
 {
     int k, i;
-    //    set<int> neighbors;
-    std::set<int> neighbors;
-    std::set<int>::iterator it;
-//    int vertex = 1;
+//    //    set<int> neighbors;
+//    std::set<int> neighbors;
+//    std::set<int>::iterator it;
+////    int vertex = 1;
 
     //finding the first ring neighboorhood of all vertices:
     for(k = 0; k < h_no_of_vertices; k++){
         for(i = 0; i < h_no_of_faces; i++){
             if((h_faces[i].v1 == k) || (h_faces[i].v2 == k) || (h_faces[i].v3 == k)){
-                neighbors.insert(h_faces[i].v1);
-                neighbors.insert(h_faces[i].v2);
-                neighbors.insert(h_faces[i].v3);
+               h_vertices[k].first_ring_points.insert(h_faces[i].v1);
+               h_vertices[k].first_ring_points.insert(h_faces[i].v2);
+               h_vertices[k].first_ring_points.insert(h_faces[i].v3);
             }
         }
 
         // to remove the vertex whose neighborhood was calculated
-        it=neighbors.begin();
-        neighbors.erase(it);
+//        it=neighbors.begin();
+//        neighbors.erase(it);
 
-//        std::cout << endl << "Neighbors of vertex no " << k << ":";
-//        for (it=neighbors.begin(); it!=neighbors.end(); ++it)
-//            std::cout << ' ' << *it;
-//        std::cout << '\n';
+////        std::cout << endl << "Neighbors of vertex no " << k << ":";
+////        for (it=neighbors.begin(); it!=neighbors.end(); ++it)
+////            std::cout << ' ' << *it;
+////        std::cout << '\n';
 
-        neighbors.clear();
+//        neighbors.clear();
 
     }
+}
+
+std::set<int> HarrisOperatorResponse::selected_neighborhood(int index)
+{
+    std::set<int> ringhood ;
+    for(int i=0; i<h_no_of_faces;i++)
+    {
+
+        if(h_faces[i].v1 == index)
+        {
+            ringhood.insert(h_faces[i].v2);
+            ringhood.insert(h_faces[i].v3);
+        }
+        else if(h_faces[i].v2 == index)
+        {
+            ringhood.insert(h_faces[i].v1);
+            ringhood.insert(h_faces[i].v3);
+        }
+        else if(h_faces[i].v3 == index)
+        {
+            ringhood.insert(h_faces[i].v1);
+            ringhood.insert(h_faces[i].v2);
+        }
+    }
+
+
+    return ringhood;
+}
+
+
+void HarrisOperatorResponse::display_ringhood(std::set<int> ringhood)
+{
+    std::set<int>::iterator it;
+    for(it = ringhood.begin(); it!=ringhood.end(); it++)
+    {
+        std::cout<<*it<<" ";
+    }
+
+}
+
+std::set<int> HarrisOperatorResponse::get_k_ringhood(Harris_vertices h_vertices, int k)
+{
+//    HarrisOperatorResponse x(Dir);
+    std::set<int>::iterator ita,itx, itp;
+    std::set<int> tmp, ringhood;
+    std::vector<int> tmp2;
+    // k = norings;
+    std::set<int> k_ringhood, final_ring,k1_ringhood;
+    std::set<int>::iterator it;
+
+    if(k ==0){
+        cout<<"Error. K has to be a non zero positive integer."<<endl;
+        EXIT_FAILURE;
+
+    }
+    else if(k == 1)
+    {
+        return h_vertices.first_ring_points;
+    }
+    else if (k > 1){
+        // number of ring = m+1
+        for(int m = 1; m<k; m++) {
+            if(m ==1 && k ==2){
+                for(it = h_vertices.first_ring_points.begin(); it!=h_vertices.first_ring_points.end(); it++)
+                {
+                    int o = *it;
+                    std::set<int>ringhood = selected_neighborhood(o);
+
+                    for(std::set<int>::iterator iti = ringhood.begin(); iti != ringhood.end();iti++)
+                    {
+                        int j = *iti;
+
+                        k_ringhood.insert(j);
+
+                    }
+
+                }
+                return  k_ringhood;
+
+            }
+            if(m == 1)
+            {
+                for(it = h_vertices.first_ring_points.begin(); it!=h_vertices.first_ring_points.end(); it++)
+
+                {
+                    int o = *it;
+                    std::set<int>ringhood = selected_neighborhood(o);
+                    for(std::set<int>::iterator iti = ringhood.begin(); iti != ringhood.end();iti++)
+                    {
+                        int j = *iti;
+
+                        k_ringhood.insert(j);
+
+                    }
+
+                }
+            }
+            else if(m>1)
+            {
+
+                final_ring = k_ringhood;
+                for(ita = k_ringhood.begin(); ita!=k_ringhood.end(); ita++)
+
+                {
+                    int o = *ita;
+                    tmp = selected_neighborhood(o);
+                    for(itx = tmp.begin(); itx!=tmp.end(); itx++)
+                    {
+                        int l = *itx;
+                        ringhood.insert(l);
+                    }
+
+                }
+
+                for(std::set<int>::iterator iti = ringhood.begin(); iti != ringhood.end();iti++)
+                {
+                    int j = *iti;
+
+                    final_ring.insert(j);
+
+                }
+
+                k_ringhood= final_ring;
+            }
+
+            if(m == k-1)
+            {
+                return final_ring;
+            }
+        }
+    }
+
+
+
 }
 
 //void HarrisOperatorResponse::getNeighboorhood(int k_rings)
