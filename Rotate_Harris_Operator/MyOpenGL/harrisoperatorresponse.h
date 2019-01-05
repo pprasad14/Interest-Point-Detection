@@ -33,6 +33,8 @@ public:
     Harris_vertices * h_vertices;
     Harris_vertices * new_vertices;
 
+    float H_max;
+
     HarrisOperatorResponse();
 
     std::set<int> selected_neighborhood(int index);

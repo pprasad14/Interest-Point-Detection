@@ -291,8 +291,8 @@ void MyGLWidget::initializeGL()
     glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
     glEnable ( GL_COLOR_MATERIAL ) ;
 
-//        glEnable(GL_CULL_FACE);
-//        glShadeModel(GL_SMOOTH);
+    //        glEnable(GL_CULL_FACE);
+    //        glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
@@ -398,8 +398,8 @@ void MyGLWidget::draw()
         glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
         glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
         //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
-//        cout << Nx*Nx + Ny*Ny + Nz*Nz<<endl;
-//        cout <<norm<<endl;
+        //        cout << Nx*Nx + Ny*Ny + Nz*Nz<<endl;
+        //        cout <<norm<<endl;
 
         glEnd();
     }
@@ -416,7 +416,7 @@ void MyGLWidget::draw()
     }
 
     // EDGES IN RING
-    int EdgesinRing = 0;
+    int neighborhood_edges = 0;
     for(int i=0; i< h_no_of_interest_points; i++)
     {
         int P = interest_vertices[i];                                                   //For each Interest/Ring Point
@@ -426,11 +426,11 @@ void MyGLWidget::draw()
 
         for(std::set<int>::iterator iti = N.begin(); iti != N.end();iti++)
         {
-            int nei=*iti;
+            int neighbor=*iti;
 
             for(int k=0; k< h_no_of_interest_points; k++)
             {
-                if (nei==interest_vertices[k])                                          //Draw an Edge if Neighbour Vertice is in Ring
+                if (neighbor==interest_vertices[k])                                          //Draw an Edge if Neighbour Vertice is in Ring
                 {
                     glLineWidth(7.0);
                     glColor3f(1.0f, 0.0f, 0.0f);
@@ -438,14 +438,13 @@ void MyGLWidget::draw()
                     glVertex3f(this->vertices[interest_vertices[i]].x,this->vertices[interest_vertices[i]].y ,this->vertices[interest_vertices[i]].z);
                     glVertex3f(this->vertices[interest_vertices[k]].x,this->vertices[interest_vertices[k]].y ,this->vertices[interest_vertices[k]].z);
                     glEnd(); //end drawing of edges
-                    EdgesinRing++;
+                    neighborhood_edges++;
                 }
             }
         }
     }
 
-    std::cout<<endl<<"Points in Ring: "<<h_no_of_interest_points;
-    std::cout<<endl<<"Edges in Ring: "<<EdgesinRing<<endl;
-
+    std::cout << endl <<"Points in Ring: " << h_no_of_interest_points;
+    std::cout << endl << "Edges in Ring: " << (neighborhood_edges/2) <<endl;
 
 }

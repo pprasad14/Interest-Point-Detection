@@ -8,6 +8,17 @@ QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+#GSL Integration
+CONFIG += c++11 console
+CONFIG -= app_bundle
+
+win32{
+INCLUDEPATH += C:\GnuWin32\include
+INCLUDEPATH += C:\GnuWin32\lib
+LIBS += -LC:\GnuWin32\lib -llibgsl
+LIBS += -LC:\GnuWin32\lib -llibgslcblas
+}
+
 TARGET = MyOpenGL
 TEMPLATE = app
 
