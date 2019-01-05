@@ -11,7 +11,7 @@ struct Harris_vertices {
     float y;
     float z;
     std::set<int> first_ring_points;
-    float Harris_response;
+    double Harris_response;
 };
 
 struct Harris_faces {
@@ -46,6 +46,11 @@ public:
     void getNeighboorhood();
 
     void compute_harris_response( int rings, int rings_max ,float H = 0.4);
+
+    void compute_canditate_interest_points();
+    std::set<int> candidate_interest_points;
+
+    void compute_interest_points(int fraction);
 
     ~HarrisOperatorResponse();
 

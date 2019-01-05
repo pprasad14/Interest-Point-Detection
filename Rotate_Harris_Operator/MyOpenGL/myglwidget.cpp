@@ -20,8 +20,10 @@ using std::cerr;
 //using std::cin;
 //using std::cerr;
 
-std::string file_path_vert_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert";
-std::string file_path_tri_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri";
+std::string file_path_vert_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\klingon.vert";
+std::string file_path_tri_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\klingon.tri";
+
+std::string file_path_out = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points_test.txt";
 
 std::ifstream inFile_vert(file_path_vert_gl);
 std::ifstream inFile_face(file_path_tri_gl);
@@ -29,7 +31,7 @@ std::ifstream inFile_face(file_path_tri_gl);
 //std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 //std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt");
+std::ifstream inFile_int_points(file_path_out);
 
 //std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
 //std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.tri");
@@ -110,7 +112,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 //    std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 //    std::ifstream inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
 
-    std::ifstream inFile_int_points("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt");
+    std::ifstream inFile_int_points(file_path_out);
 
 
     //        std::ifstream inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\octahedron.vert");
@@ -374,6 +376,7 @@ void MyGLWidget::draw()
 
     float Ux, Uy, Uz, Vx, Vy, Vz, Nx, Ny, Nz;
     float norm;
+    int size = 30;
 
     for(int i = 0; i < no_of_faces; i++)
     {
@@ -403,9 +406,9 @@ void MyGLWidget::draw()
         glColor3f(0.5f, 0.5f,0.5f);
         glBegin(GL_TRIANGLES);
         glNormal3f(Nx,Ny,Nz);
-        glVertex3f(this->vertices[this->faces[i].v1].x  ,this->vertices[this->faces[i].v1].y ,this->vertices[this->faces[i].v1].z  );
-        glVertex3f(this->vertices[this->faces[i].v2].x ,this->vertices[this->faces[i].v2].y ,this->vertices[this->faces[i].v2].z  );
-        glVertex3f(this->vertices[this->faces[i].v3].x ,this->vertices[this->faces[i].v3].y ,this->vertices[this->faces[i].v3].z );
+        glVertex3f(this->vertices[this->faces[i].v1].x *size ,this->vertices[this->faces[i].v1].y *size,this->vertices[this->faces[i].v1].z  *size);
+        glVertex3f(this->vertices[this->faces[i].v2].x *size,this->vertices[this->faces[i].v2].y *size,this->vertices[this->faces[i].v2].z  *size);
+        glVertex3f(this->vertices[this->faces[i].v3].x *size,this->vertices[this->faces[i].v3].y *size,this->vertices[this->faces[i].v3].z *size);
         //        glVertex3f(this->vertices[this->faces[i].v4].x ,this->vertices[this->faces[i].v4].y ,this->vertices[this->faces[i].v4].z );
         //        cout << Nx*Nx + Ny*Ny + Nz*Nz<<endl;
         //        cout <<norm<<endl;
@@ -420,40 +423,40 @@ void MyGLWidget::draw()
         //        glColor3f(1.0, 0.0, 0.0);
         glColor3f(0.0f, 1.0f, 0.0f);
         glBegin(GL_POINTS);
-        glVertex3f(this->vertices[interest_vertices[i]].x , this->vertices[interest_vertices[i]].y , this->vertices[interest_vertices[i]].z);
+        glVertex3f(this->vertices[interest_vertices[i]].x *size, this->vertices[interest_vertices[i]].y *size, this->vertices[interest_vertices[i]].z *size);
         glEnd();
     }
 
     // EDGES IN RING
-    int neighborhood_edges = 0;
-    for(int i=0; i< h_no_of_interest_points; i++)
-    {
-        int P = interest_vertices[i];                                                   //For each Interest/Ring Point
+//    int neighborhood_edges = 0;
+//    for(int i=0; i< h_no_of_interest_points; i++)
+//    {
+//        int P = interest_vertices[i];                                                   //For each Interest/Ring Point
 
 
-        std::set<int>N = vertices[P].first_ring_points;                              //Find its Neighbour Vertices
+//        std::set<int>N = vertices[P].first_ring_points;                              //Find its Neighbour Vertices
 
-        for(std::set<int>::iterator iti = N.begin(); iti != N.end();iti++)
-        {
-            int neighbor=*iti;
+//        for(std::set<int>::iterator iti = N.begin(); iti != N.end();iti++)
+//        {
+//            int neighbor=*iti;
 
-            for(int k=0; k< h_no_of_interest_points; k++)
-            {
-                if (neighbor==interest_vertices[k])                                          //Draw an Edge if Neighbour Vertice is in Ring
-                {
-                    glLineWidth(7.0);
-                    glColor3f(1.0f, 0.0f, 0.0f);
-                    glBegin(GL_LINES); //starts drawing of edges
-                    glVertex3f(this->vertices[interest_vertices[i]].x,this->vertices[interest_vertices[i]].y ,this->vertices[interest_vertices[i]].z);
-                    glVertex3f(this->vertices[interest_vertices[k]].x,this->vertices[interest_vertices[k]].y ,this->vertices[interest_vertices[k]].z);
-                    glEnd(); //end drawing of edges
-                    neighborhood_edges++;
-                }
-            }
-        }
-    }
+//            for(int k=0; k< h_no_of_interest_points; k++)
+//            {
+//                if (neighbor==interest_vertices[k])                                          //Draw an Edge if Neighbour Vertice is in Ring
+//                {
+//                    glLineWidth(7.0);
+//                    glColor3f(1.0f, 0.0f, 0.0f);
+//                    glBegin(GL_LINES); //starts drawing of edges
+//                    glVertex3f(this->vertices[interest_vertices[i]].x,this->vertices[interest_vertices[i]].y ,this->vertices[interest_vertices[i]].z);
+//                    glVertex3f(this->vertices[interest_vertices[k]].x,this->vertices[interest_vertices[k]].y ,this->vertices[interest_vertices[k]].z);
+//                    glEnd(); //end drawing of edges
+//                    neighborhood_edges++;
+//                }
+//            }
+//        }
+//    }
 
     std::cout << endl <<"Points in Ring: " << h_no_of_interest_points;
-    std::cout << endl << "Edges in Ring: " << (neighborhood_edges/2) <<endl;
+//    std::cout << endl << "Edges in Ring: " << (neighborhood_edges/2) <<endl;
 
 }

@@ -25,11 +25,13 @@ using std::endl;
 using std::cin;
 using std::cerr;
 
-std::string file_path_vert = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert";
-std::string file_path_tri = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri";
+std::string file_path_vert = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\klingon.vert";
+std::string file_path_tri = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\klingon.tri";
 
 std::ifstream h_inFile_vert(file_path_vert);
 std::ifstream h_inFile_face(file_path_tri);
+
+std::string outFilePath = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points_test.txt";
 
 //std::ifstream h_inFile_vert("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.vert");
 //std::ifstream h_inFile_face("C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\Apple.tri");
@@ -313,7 +315,7 @@ void HarrisOperatorResponse::compute_harris_response( int rings, int rings_max, 
 
 
 
-        cout << endl << "start of Harris response for vertex " << c << " : " << endl;
+//        cout << endl << "start of Harris response for vertex " << c << " : " << endl;
         // new stuct variable for storing the neighborhood as a separate object
         new_vertices = new Harris_vertices[temp_k_neighborhood.size()];
 
@@ -328,10 +330,10 @@ void HarrisOperatorResponse::compute_harris_response( int rings, int rings_max, 
         }
 
 
-        cout << endl << "Array Values:" ;
-        for(int k = 0; k < temp_k_neighborhood.size(); k++)
-            cout << " " << neighborhood_array[k];
-        cout << endl;
+//        cout << endl << "Array Values:" ;
+//        for(int k = 0; k < temp_k_neighborhood.size(); k++)
+//            cout << " " << neighborhood_array[k];
+//        cout << endl;
 
         counter = 0;
         //populating the new_vertices with the x,y,z of the neighborhood points
@@ -358,8 +360,8 @@ void HarrisOperatorResponse::compute_harris_response( int rings, int rings_max, 
         y_center = y_center/temp_k_neighborhood.size();
         z_center = z_center/temp_k_neighborhood.size();
 
-        cout << " Original centroid coordinates: " ;
-        cout << " x: " << x_center << " y: " << y_center << " z: " << z_center  << " size: " << temp_k_neighborhood.size() << endl;
+//        cout << " Original centroid coordinates: " ;
+//        cout << " x: " << x_center << " y: " << y_center << " z: " << z_center  << " size: " << temp_k_neighborhood.size() << endl;
 
 
 
@@ -385,8 +387,8 @@ void HarrisOperatorResponse::compute_harris_response( int rings, int rings_max, 
         y_center_trans = y_center_trans/temp_k_neighborhood.size();
         z_center_trans = z_center_trans/temp_k_neighborhood.size();
 
-        cout << endl << "Translated centroid coordinates (should be near 0)" ;
-        cout << " x:" << x_center_trans << " y: " << y_center_trans << " z: " << z_center_trans  << " size: " << temp_k_neighborhood.size() << endl;
+//        cout << endl << "Translated centroid coordinates (should be near 0)" ;
+//        cout << " x:" << x_center_trans << " y: " << y_center_trans << " z: " << z_center_trans  << " size: " << temp_k_neighborhood.size() << endl;
 
 
         //Compute Covariance Matrix
@@ -542,7 +544,7 @@ void HarrisOperatorResponse::compute_harris_response( int rings, int rings_max, 
         long double resp = fx2*fy2 - fxfy*fxfy - H*(fx2 + fy2)*(fx2 + fy2);
 
         h_vertices[c].Harris_response = resp;
-        std::cout<<"Response of vertex "<<c<<": "<<resp<<endl;
+//        std::cout<<"Response of vertex "<<c<<": "<<resp<<endl;
 
         if(resp > H_max)
             H_max = resp;
@@ -562,3 +564,127 @@ void HarrisOperatorResponse::compute_harris_response( int rings, int rings_max, 
 
 
 }
+
+void HarrisOperatorResponse::compute_canditate_interest_points()
+{
+    std::set<int> set_canditates;
+    std::set<int>temp_first_ring_neighborhood;
+     int counter = 0;
+//    int is_max = 0;
+
+
+//    cout << "displaying length of first ring points for all:" << endl;
+//    for (int k = 0; k < h_no_of_vertices; k++){
+//        cout << k << " :  " << (h_vertices[k].first_ring_points).size();
+//        cout << endl;
+//    }
+//    return;
+
+    for(int i = 0; i < h_no_of_vertices; i++)
+    {
+        counter = 0;
+         temp_first_ring_neighborhood = h_vertices[i].first_ring_points;
+//         cout << "yyyyyyy" << temp_first_ring_neighborhood.size();
+//             break;
+         //comparing to see if this vertex's Harris Response is maximum
+
+
+         for(std::set<int>::iterator ita = temp_first_ring_neighborhood.begin(); ita!=temp_first_ring_neighborhood.end(); ita++)
+         {
+            int v = *ita;
+            if(h_vertices[i].Harris_response > h_vertices[v].Harris_response)
+            {
+                counter++;
+            }
+//            else
+//                break;
+         }
+//         cout << "value of count " << i << " : " << counter << endl;
+
+         if (counter == temp_first_ring_neighborhood.size()-1)
+         {
+//             is_max = 1;
+             set_canditates.insert(i);
+         }
+
+
+    }
+
+
+    this->candidate_interest_points = set_canditates;
+    cout << endl << "no of candidatessssssssssssss:" << this->candidate_interest_points.size();
+
+
+//    cout << endl << "Displaying candidate interest points:" << endl;
+//    for(std::set<int>::iterator ita = this->candidate_interest_points.begin(); ita!=this->candidate_interest_points.end(); ita++)
+//    {
+//       int v = *ita;
+//       cout << " " << v;
+
+//    }
+//    cout << endl;
+
+
+}
+
+void HarrisOperatorResponse::compute_interest_points(int fraction)
+{
+    std::set<int> temp_interest_points;
+    std::set<double> harris_responses_of_candidates;
+
+    int no_of_candidates = candidate_interest_points.size();
+
+    // storing all the candidate harris responses in a set to later order and chose the top "fraction" of them
+    for(std::set<int>::iterator ita = candidate_interest_points.begin(); ita!=candidate_interest_points.end(); ita++)
+    {
+       int v = *ita;
+       harris_responses_of_candidates.insert(h_vertices[v].Harris_response);
+    }
+
+    cout << endl << "The candidate harris responses are: " << endl;
+    for(std::set<int>::iterator ita = candidate_interest_points.begin(); ita!=candidate_interest_points.end(); ita++)
+    {
+       int v = *ita;
+       cout << h_vertices[v].Harris_response << "  ";
+    }
+    cout << endl;
+
+    std::ofstream my_out_file(outFilePath);
+
+    if (my_out_file.is_open())
+    {
+        cout << endl << "outfile opened successfully!" << endl;
+
+
+        //writing my
+        for(std::set<int>::iterator ita = candidate_interest_points.begin(); ita!=candidate_interest_points.end(); ita++)
+        {
+           int v = *ita;
+           my_out_file << v << "\n";
+        }
+
+        my_out_file.close();
+    }
+    else
+    {
+        cout << endl << "outfile not opened successfully!" << endl;
+    }
+
+}
+
+//    std::ofstream my_out_file;
+//    my_out_file.open(outFilePath);
+
+//    //writing my
+//    for(ita = temp_first_ring_neighborhood.begin(); ita!=temp_first_ring_neighborhood.end(); ita++)
+//    {
+//       int v = *ita;
+
+//    }
+
+
+
+
+
+
+

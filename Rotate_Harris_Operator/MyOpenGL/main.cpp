@@ -52,8 +52,14 @@ int main(int argc, char *argv[])
 
     cout << "Main: displaying output:" << endl << endl;
 
-    cout << endl << "Start of computing Harris Response:" << endl;
-    h_obj.compute_harris_response(1,3,0.4);
+    cout << endl << "Main: Start of computing Harris Response:" << endl;
+    h_obj.compute_harris_response(3,3,0.4);
+
+    cout << endl << "Main: Start of computing Candidate Interest Points:"<< endl;
+    h_obj.compute_canditate_interest_points();
+
+    cout << endl << "Main: Start of computing Interest Points from Candidate Interest Points" << endl;
+    h_obj.compute_interest_points(100);
 
     cout << endl << "End of computing Harris Response:" << endl;
 
