@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     cout << "Main: displaying output:" << endl << endl;
 
     cout << endl << "Start of computing Harris Response:" << endl;
-    h_obj.compute_harris_response(3,3,0.4);
+    h_obj.compute_harris_response(1,3,0.4);
 
     cout << endl << "End of computing Harris Response:" << endl;
 
