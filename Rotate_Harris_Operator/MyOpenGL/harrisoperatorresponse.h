@@ -31,7 +31,7 @@ public:
 
     Harris_faces * h_faces;
     Harris_vertices * h_vertices;
-    Harris_vertices * new_vertices;
+    Harris_vertices * new_vertices; // to keep the k-ring neighborhood
 
     float H_max;
 
@@ -45,12 +45,12 @@ public:
     void populate_data();
     void getNeighboorhood();
 
-    void compute_harris_response( int rings, int rings_max ,float H = 0.4);
+    void compute_harris_response( int rings ,float H = 0.4);
 
     void compute_canditate_interest_points();
     std::set<int> candidate_interest_points;
 
-    void compute_interest_points(int fraction);
+    void compute_interest_points(float fraction);
 
     ~HarrisOperatorResponse();
 

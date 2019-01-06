@@ -20,8 +20,8 @@ using std::cerr;
 //using std::cin;
 //using std::cerr;
 
-std::string file_path_vert_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\klingon.vert";
-std::string file_path_tri_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert\\klingon.tri";
+std::string file_path_vert_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert_small\\klingon.vert";
+std::string file_path_tri_gl = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\tri_vert_small\\klingon.tri";
 
 std::string file_path_out = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\interest_points_test.txt";
 
@@ -376,7 +376,9 @@ void MyGLWidget::draw()
 
     float Ux, Uy, Uz, Vx, Vy, Vz, Nx, Ny, Nz;
     float norm;
-    int size = 30;
+//    int size = 3;
+    int size = 30 ;
+
 
     for(int i = 0; i < no_of_faces; i++)
     {

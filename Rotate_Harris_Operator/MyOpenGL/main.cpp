@@ -18,6 +18,17 @@ using std::cerr;
 
 int main(int argc, char *argv[])
 {
+    int /*zoom*/ how_many_rings=0;
+    float what_fraction=0;
+    cout << endl << "----------Harris Interest Point Detection-----------------" << endl;
+//    cout << endl << "Enter zoom to be considered: " ;
+//    cin >> zoom;
+    cout << endl << "Enter Rings to be Considered: ";
+    cin >> how_many_rings;
+    cout << "Enter fraction of Candidates to take: ";
+    cin >> what_fraction;
+
+
     cout << "Main: creating Harris Object: " << endl;
     HarrisOperatorResponse h_obj;
 
@@ -27,39 +38,17 @@ int main(int argc, char *argv[])
     h_obj.getNeighboorhood();
     cout << endl << "Main: getting 1st ring neighborhood of all vertices done!" << endl;
 
-//    std::set<int> ring_k = h_obj.get_k_ringhood(h_obj.h_vertices[500],4);
-
-//    std::string output_loc;
-//    output_loc = "C:\\Users\\Prem Prasad\\Desktop\\MAIA Projects\\Software Engineering\\OFF files\\Apple.ini.txt";
-
-//    std::ofstream outFile(output_loc);
-
-//    if(outFile)
-//    {
-//        cout << endl << "Main: Output file create at location: " << output_loc << endl;
-//        std::set<int>::iterator it;
-//        for(it = ring_k.begin();it!= ring_k.end();it++)
-//        {
-//            int val = *it;
-//            outFile << val <<" ";
-//        }
-//    }
-//    else{
-//        cout << endl << "Main: ERROR, CANNOT CREATE THE FILE! " << endl;
-//    }
-
-//    outFile.close();
 
     cout << "Main: displaying output:" << endl << endl;
 
     cout << endl << "Main: Start of computing Harris Response:" << endl;
-    h_obj.compute_harris_response(3,3,0.4);
+    h_obj.compute_harris_response(how_many_rings); // k ring
 
     cout << endl << "Main: Start of computing Candidate Interest Points:"<< endl;
     h_obj.compute_canditate_interest_points();
 
     cout << endl << "Main: Start of computing Interest Points from Candidate Interest Points" << endl;
-    h_obj.compute_interest_points(100);
+    h_obj.compute_interest_points(what_fraction);
 
     cout << endl << "End of computing Harris Response:" << endl;
 
